@@ -5,6 +5,9 @@
 % read in dns data
 load dns_data.mat
 
+%%%%%%
+% Part 1
+%%%%%%
 % determine average and fluctuating values; average over x for one z
 % coordiate at set time and y values
 % we can write a function that will do this for any parameter we choose
@@ -37,9 +40,35 @@ numx = dat.nx;
 [W, w_prime] = ReynoldsLoop(w,numz,numx);
 
 
+%
+% part 1 b
+% 
+% tke components
+tke = zeros(3,numz,numx);
+tke(1,:,:) = u_prime.^2;
+tke(2,:,:) = v_prime.^2;
+tke(3,:,:) = w_prime.^2;
+
+% Reynolds Stress
+uv = u_prime.*v_prime;
+uw = u_prime.*w_prime;
+
+%
+% part 1 c
+%
 
 
 
+%%%%%%
+% Part 2
+%%%%%%
+
+% part a
+
+
+%
+% Functions
+%
 % Reynolds decomp function
 function [U, u_prime] = ReynoldsDecomp(u)
     % u should come in as a vector (one z value, all x values)
