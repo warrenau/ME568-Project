@@ -1,6 +1,7 @@
 % ME 568 Assignment 4
 % Austin Warren
 % May 2022
+clear; clc; clf;
 
 % read in dns data
 load dns_data.mat
@@ -64,6 +65,25 @@ uw = u_prime.*w_prime;
 %%%%%%
 
 % part a
+% P = - u_i u_j S_ij
+% epsilon = 2 nu s_ij s_ij
+% S_ij = 1/2 (dU_i/dx_j + dU_j/dx_i)
+hx = dat.dx;
+hz = dat.dz;
+
+[dudz] = gradient(U,hz); 
+%[dwdx] = gradient(W,hx,hz);
+S_ij = 0.5*(dudz);
+
+[dudz, dudx] = gradient(u_prime, hz, hx);
+[dwdz, dwdx] = gradient(w_prime, hz, hx);
+s_ij = 0.5*(dudz + dwdx);
+
+production = - uw.*S_ij;
+dissipation = 2 * dat.nu * (s_ij.*s_ij);
+
+
+
 
 
 %
@@ -87,4 +107,20 @@ function [U, u_prime] = ReynoldsLoop(u,numz,numx)
     end
 end
 %
+
+
+% function for S_ij and s_ij
+% function [S_ij] = sij(U, W, hx, hz)
+%     [dudx, dudz] = gradient(U,hx,hz); % this might be backwards? x might be the second dimension?
+%     [dwdx, dwdz] = gradient(W,hx,hz); % but bc hx=hz and S_ij uses both, it should be fine? -- idk
+%     S_ij = 0.5*(dudz + dwdx);
+% 
+% end
+%
+
+
+
+
+
+
 
