@@ -232,7 +232,7 @@ P_horiz = zeros(numz);
 ep_horiz = zeros(numz);
 for i = 1:numz
    P_horiz(i) = mean(production(i,:)); 
-   ep_horiz = mean(dissipation(i,:));
+   ep_horiz(i) = mean(dissipation(i,:));
 end
 
 P_avg = mean(P_horiz);
