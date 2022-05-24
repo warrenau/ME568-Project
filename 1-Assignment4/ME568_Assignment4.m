@@ -78,6 +78,9 @@ for k=1:length(dns_data)
     % lets print out values to a file for the timesteps we are interested
     % in.
     if k==3
+        writematrix(u,"2-tabs/u_1354.csv");
+        writematrix(v,"2-tabs/v_1354.csv");
+        writematrix(w,"2-tabs/w_1354.csv");
         writematrix(U,"2-tabs/U_1354.csv");
         writematrix(V,"2-tabs/V_1354.csv");
         writematrix(W,"2-tabs/W_1354.csv");
@@ -96,6 +99,9 @@ for k=1:length(dns_data)
         writematrix(ww,"2-tabs/ww_1354.csv");
         
     elseif k==8
+        writematrix(u,"2-tabs/u_3043.csv");
+        writematrix(v,"2-tabs/v_3043.csv");
+        writematrix(w,"2-tabs/w_3043.csv");
         writematrix(U,"2-tabs/U_3043.csv");
         writematrix(V,"2-tabs/V_3043.csv");
         writematrix(W,"2-tabs/W_3043.csv");
@@ -181,9 +187,9 @@ for k=1:length(dns_data)
 end
 
 % write out produciton, dissipation, and buoyancy at each time
-writematrix(P_avg,"production.csv");
-writematrix(ep_avg,"dissipation.csv");
-writematrix(J_b_avg,"buoyancy.csv");
+writematrix(P_avg,"2-tabs/production.csv");
+writematrix(ep_avg,"2-tabs/dissipation.csv");
+writematrix(J_b_avg,"2-tabs/buoyancy.csv");
 
 
 %
