@@ -7,9 +7,9 @@ clear; clc;
 load dns_data.mat
 
 y_ind = 2; % only using the second y plane
-P_avg = zeros(length(dns_data));
-ep_avg = zeros(length(dns_data));
-J_b_avg = zeros(length(dns_data));
+P_avg = zeros(length(dns_data),1);
+ep_avg = zeros(length(dns_data),1);
+J_b_avg = zeros(length(dns_data),1);
 
 for k=1:length(dns_data)
     %%%%%%
@@ -78,46 +78,46 @@ for k=1:length(dns_data)
     % lets print out values to a file for the timesteps we are interested
     % in.
     if k==3
-        writematrix(u,"2-tabs/u_1354.csv");
-        writematrix(v,"2-tabs/v_1354.csv");
-        writematrix(w,"2-tabs/w_1354.csv");
-        writematrix(U,"2-tabs/U_1354.csv");
-        writematrix(V,"2-tabs/V_1354.csv");
-        writematrix(W,"2-tabs/W_1354.csv");
-        writematrix(u_prime,"2-tabs/uprime_1354.csv");
-        writematrix(v_prime,"2-tabs/vprime_1354.csv");
-        writematrix(w_prime,"2-tabs/wprime_1354.csv");
-        writematrix(tke_u,"2-tabs/utke_1354.csv");
-        writematrix(tke_v,"2-tabs/vtke_1354.csv");
-        writematrix(tke_w,"2-tabs/wtke_1354.csv");
-        writematrix(tke_tot,"2-tabs/tottke_1354.csv");
-        writematrix(uu,"2-tabs/uu_1354.csv");
-        writematrix(uv,"2-tabs/uv_1354.csv");
-        writematrix(uw,"2-tabs/uw_1354.csv");
-        writematrix(vv,"2-tabs/vv_1354.csv");
-        writematrix(vw,"2-tabs/vw_1354.csv");
-        writematrix(ww,"2-tabs/ww_1354.csv");
+        writematrix(u,'2-tabs/u_1354');
+        writematrix(v,'2-tabs/v_1354');
+        writematrix(w,'2-tabs/w_1354');
+        writematrix(U,'2-tabs/Uavg_1354');
+        writematrix(V,'2-tabs/Vavg_1354');
+        writematrix(W,'2-tabs/Wavg_1354');
+        writematrix(u_prime,'2-tabs/uprime_1354');
+        writematrix(v_prime,'2-tabs/vprime_1354');
+        writematrix(w_prime,'2-tabs/wprime_1354');
+        writematrix(tke_u,'2-tabs/utke_1354');
+        writematrix(tke_v,'2-tabs/vtke_1354');
+        writematrix(tke_w,'2-tabs/wtke_1354');
+        writematrix(tke_tot,'2-tabs/tottke_1354');
+        writematrix(uu,'2-tabs/uu_1354');
+        writematrix(uv,'2-tabs/uv_1354');
+        writematrix(uw,'2-tabs/uw_1354');
+        writematrix(vv,'2-tabs/vv_1354');
+        writematrix(vw,'2-tabs/vw_1354');
+        writematrix(ww,'2-tabs/ww_1354');
         
     elseif k==8
-        writematrix(u,"2-tabs/u_3043.csv");
-        writematrix(v,"2-tabs/v_3043.csv");
-        writematrix(w,"2-tabs/w_3043.csv");
-        writematrix(U,"2-tabs/U_3043.csv");
-        writematrix(V,"2-tabs/V_3043.csv");
-        writematrix(W,"2-tabs/W_3043.csv");
-        writematrix(u_prime,"2-tabs/uprime_3043.csv");
-        writematrix(v_prime,"2-tabs/vprime_3043.csv");
-        writematrix(w_prime,"2-tabs/wprime_3043.csv");
-        writematrix(tke_u,"2-tabs/utke_3043.csv");
-        writematrix(tke_v,"2-tabs/vtke_3043.csv");
-        writematrix(tke_w,"2-tabs/wtke_3043.csv");
-        writematrix(tke_tot,"2-tabs/tottke_3043.csv");
-        writematrix(uu,"2-tabs/uu_3043.csv");
-        writematrix(uv,"2-tabs/uv_3043.csv");
-        writematrix(uw,"2-tabs/uw_3043.csv");
-        writematrix(vv,"2-tabs/vv_3043.csv");
-        writematrix(vw,"2-tabs/vw_3043.csv");
-        writematrix(ww,"2-tabs/ww_3043.csv");
+        writematrix(u,'2-tabs/u_3043');
+        writematrix(v,'2-tabs/v_3043');
+        writematrix(w,'2-tabs/w_3043');
+        writematrix(U,'2-tabs/Uavg_3043');
+        writematrix(V,'2-tabs/Vavg_3043');
+        writematrix(W,'2-tabs/Wavg_3043');
+        writematrix(u_prime,'2-tabs/uprime_3043');
+        writematrix(v_prime,'2-tabs/vprime_3043');
+        writematrix(w_prime,'2-tabs/wprime_3043');
+        writematrix(tke_u,'2-tabs/utke_3043');
+        writematrix(tke_v,'2-tabs/vtke_3043');
+        writematrix(tke_w,'2-tabs/wtke_3043');
+        writematrix(tke_tot,'2-tabs/tottke_3043');
+        writematrix(uu,'2-tabs/uu_3043');
+        writematrix(uv,'2-tabs/uv_3043');
+        writematrix(uw,'2-tabs/uw_3043');
+        writematrix(vv,'2-tabs/vv_3043');
+        writematrix(vw,'2-tabs/vw_3043');
+        writematrix(ww,'2-tabs/ww_3043');
         
     else
         
@@ -137,25 +137,37 @@ for k=1:length(dns_data)
     hz = dat.dz;
 
     [dUdz] = gradient(U,hz);
-    S_ij = 0.5*(dUdz);
+    S_ij = (dUdz);
 
     [dudz, dudx] = gradient(u_prime, hz, hx);
     [dwdz, dwdx] = gradient(w_prime, hz, hx);
     [dvdz, dvdx] = gradient(v_prime, hz, hx);
-    s_ij = 0.5*(dudz + dwdx + dvdx + dvdz);
+
 
     production = - uw.*S_ij;
-    dissipation = 2 * dat.nu * (s_ij.*s_ij);
+    dissipation = zeros(numz,numx);
+    for m = 1:numz
+        for n = 1:numx
+            dissipation(m,n) = 2 * dat.nu * (dudx(m,n).^2 + dudz(m,n).^2 + dvdx(m,n).^2 + dvdz(m,n).^2 + dwdx(m,n).^2 + dwdz(m,n).^2);
+        end
+    end
 
     P_horiz = zeros(numz,1);
     ep_horiz = zeros(numz,1);
     for i = 1:numz
-       P_horiz(i) = mean(production(i,:)); 
-       ep_horiz(i) = mean(dissipation(i,:));
+       P_horiz(i,1) = mean(production(i,:));
+       ep_horiz(i,1) = mean(dissipation(i,:));
     end
 
     P_avg(k) = mean(P_horiz);
     ep_avg(k) = mean(ep_horiz);
+    
+    if k == 8
+        writematrix(production,'2-tabs/P_3043');
+        writematrix(P_horiz,'2-tabs/P_horiz');
+        writematrix(dissipation,'2-tabs/ep_3043');
+        writematrix(ep_horiz,'2-tabs/ep_horiz');
+    end
 
 
 
@@ -173,9 +185,8 @@ for k=1:length(dns_data)
 
     g = dat.g;
     rho0 = dat.rho0;
-    rho = squeeze(dat.density(:,y_ind,:));
-    [rho_0, rho_prime] = ReynoldsLoop(rho,numz,numx);
-    J_b = -g/rho0 * w_prime.*rho_prime;
+    rho = squeeze(dat.density(:,y_ind,:))';
+    J_b = -g/rho0 * w_prime.*rho;
     J_b_horiz = zeros(numz,1);
     for j=1:numz
        J_b_horiz(j) = mean(J_b(j,:)); 
@@ -187,9 +198,9 @@ for k=1:length(dns_data)
 end
 
 % write out produciton, dissipation, and buoyancy at each time
-writematrix(P_avg,"2-tabs/production.csv");
-writematrix(ep_avg,"2-tabs/dissipation.csv");
-writematrix(J_b_avg,"2-tabs/buoyancy.csv");
+writematrix(P_avg,'2-tabs/production');
+writematrix(ep_avg,'2-tabs/dissipation');
+writematrix(J_b_avg,'2-tabs/buoyancy');
 
 
 %
