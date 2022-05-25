@@ -83,12 +83,12 @@ saveas(gcf,'1-plots/Vel_primes_plot_3043_1354.png')
 
 % U, V, W
 U_names = {U_3043, U_1354, V_3043, V_1354, W_3043, W_1354};
-U_labels = ["U","V","W","U","V","W"];
+U_labels = ["U","U","V","V","W","W"];
 figure(3); clf;
 for k=1:length(U_names)
     subplot(3,2,k);
     plot(U_names{k},dat.z);
-    xlabel("U (m/s)");
+    xlabel(U_labels(k)+" (m/s)");
     ylabel("z (m)");
     title(U_labels(k)+" at t="+times(k)+"s");
     
@@ -115,7 +115,7 @@ saveas(gcf,'1-plots/tke_plot_3043_1354.png')
 
 uu_names_3043 = {uu_3043,uv_3043,uw_3043,vv_3043,vw_3043,ww_3043};
 uu_labels = ["u'u'","u'v'","u'w'","v'v'","v'w'","w'w'"];
-figure(6); clf;
+figure(5); clf;
 for k=1:6
     subplot(3,2,k);
     pcolor(dat.x, dat.z, uu_names_3043{k}), shading flat, caxis([-10e-6 10e-6]), colorbar;
@@ -126,7 +126,7 @@ end
 saveas(gcf,'1-plots/ReynoldsStress_plot_3043.png')
 
 uu_names_1354 = {uu_1354,uv_1354,uw_1354,vv_1354,vw_1354,ww_1354};
-figure(7); clf;
+figure(6); clf;
 for k=1:6
     subplot(3,2,k);
     pcolor(dat.x, dat.z, uu_names_1354{k}), shading flat, caxis([-10e-6 10e-6]), colorbar;
@@ -151,7 +151,7 @@ ep_horiz = readmatrix('2-tabs/ep_horiz');
 ep_3043 = readmatrix('2-tabs/ep_3043');
 
 % plots production and dissipation
-figure(8); clf;
+figure(7); clf;
 subplot(2,1,1);
 pcolor(dat.x, dat.z, P_3043), shading flat, caxis([0 5e-8]), colorbar;
 xlabel('x (m)');
@@ -167,7 +167,7 @@ title("\epsilon at t=3043.9s");
 saveas(gcf,'1-plots/prod_diss_plot_3043.png')
 
 %
-figure(9);clf;
+figure(8);clf;
 subplot(2,1,1);
 plot(P_horiz, dat.z);
 xlabel("P");
@@ -203,7 +203,7 @@ for i=1:length(dns_data)
     time(i,1) = dns_data(i).time;
 end
 
-figure(10); clf;
+figure(9); clf;
 subplot(3,1,1);
 plot(time, P_avg);
 xlabel("time (s)");

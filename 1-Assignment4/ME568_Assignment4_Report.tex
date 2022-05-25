@@ -18,8 +18,6 @@
 \usepackage{multicol} % makes tables pretty
 \usepackage{setspace}
 \usepackage{subcaption}
-
-\newcommand{\creflastconjunction}{, and\nobreakspace} % adds oxford comma to cleveref
 \usepackage[utf8]{inputenc}
 \usepackage{textcomp}
 \usepackage{titlesec}
@@ -29,10 +27,11 @@
 \usepackage{enumitem}
 \usepackage[T1]{fontenc}
 \usepackage{tikz}
+\usepackage{soul}
 
 \usepackage{hyperref}
 \usepackage{cleveref}
-
+\newcommand{\creflastconjunction}{, and\nobreakspace} % adds oxford comma to cleveref
 
 \doublespacing
 
@@ -47,7 +46,7 @@
 \setlength{\headheight}{28pt}
 \lhead{ME 568 / OC 674\\Spring 2022}
 \chead{Assignment 4\\}
-\rhead{Austin Warren\\Due May 24, 2022}
+\rhead{Austin Warren\\Due May 25, 2022}
 
 \begin{document}
 	
@@ -55,43 +54,43 @@
 		% Part 1
 		\item \textbf{Part 1:} Choose a time when the flow is strongly turbulent and evaluate the following:
 		\begin{enumerate}
-			\item First perform a Reynolds decomposition by defining the mean and perturbation $u$, $v$, $w$. Because the background state varies in $z$. Discuss any challenges you might have in doing decomposition.\par
+			\item First perform a Reynolds decomposition by defining the mean and perturbation $u$, $v$, $w$. Because the background state varies in $z$, it may be appropriate for your means to also be a function of $z$. Discuss any challenges you might have in doing decomposition.\par
 			
-			I chose the eighth time step ($t=\SI{3043.9}{\second}$) because it is far enough along to have turbulence. I also did my analysis only in the second $y$ plane. For the Reynolds decomposition, I decided to average over $x$, such that the mean velocity is only a function of $z$. I did this for the velocity in all three directions. The fluctuating values are then just the difference between the instantaneous velocity and the mean velocity. Normally, the Reynolds decomposition involves a time average, however in this case, the time steps are very far apart and do not provide a sufficient number of data points to provide a good average. The mean as a function of $z$ and $t$ works well because the flow in the $x$-direction is relatively constant at each $z$ value, especially in the early stages of the simulation. \Cref{fig:Vel 3043,,fig:Vel avg 3043,,fig:Vel prime 3043} show the instantaneous, mean, and fluctuating velocities, respectively. The mean velocity is plotted as a function of $z$ only, while the instantaneous and fluctuating velocities are plotted as functions of both $x$ and $z$. (Please note that I will still play with the limits of the plots to make them look the best, but I wanted to have something today to get feedback on.)
+			I chose the eighth time step ($t=\SI{3043.9}{\second}$) because it is far enough along to have turbulence. I also did my analysis only in the second $y$ plane. For the Reynolds decomposition, I decided to average over $x$, such that the mean velocity is only a function of $z$. I did this for the velocity in all three directions. The fluctuating values are then just the difference between the instantaneous velocity and the mean velocity. Normally, the Reynolds decomposition involves a time average, however in this case, the time steps are very far apart and do not provide a sufficient number of data points to provide a good average. The mean as a function of $z$ and $t$ works well because the flow in the $x$-direction is relatively constant at each $z$ value, especially in the early stages of the simulation. \Cref{fig:Vel,,fig:Vel avg,,fig:Vel prime} show the instantaneous, mean, and fluctuating velocities, respectively. The mean velocity is plotted as a function of $z$ only, while the instantaneous and fluctuating velocities are plotted as functions of both $x$ and $z$. 
 			
 			
 			\begin{figure}[htbp]
 				\centering
-				\includegraphics[width=\textwidth]{1-plots/Vel_plot_3043.png}
-				\caption{Instantaneous velocity at $t=\SI{3043.9}{\second}$.}
-				\label{fig:Vel 3043}
+				\includegraphics[width=\textwidth]{1-plots/Vel_plot_3043_1354.png}
+				\caption{Instantaneous velocity at $t=\SI{3043.9}{\second}$ and at $t=\SI{1354.1}{\second}$.}
+				\label{fig:Vel}
 			\end{figure}
 		
 			\begin{figure}[htbp]
 				\centering
-				\includegraphics[width=\textwidth]{1-plots/Vel_avg_plot_3043.png}
-				\caption{Mean velocity at $t=\SI{3043.9}{\second}$.}
-				\label{fig:Vel avg 3043}
+				\includegraphics[width=\textwidth]{1-plots/Vel_avg_plot_3043_1354.png}
+				\caption{Mean velocity at $t=\SI{3043.9}{\second}$ and at $t=\SI{1354.1}{\second}$.}
+				\label{fig:Vel avg}
 			\end{figure}
 		
 			\begin{figure}[htbp]
 				\centering
-				\includegraphics[width=\textwidth]{1-plots/Vel_primes_plot_3043.png}
-				\caption{Fluctuating velocity at $t=\SI{3043.9}{\second}$.}
-				\label{fig:Vel prime 3043}
+				\includegraphics[width=\textwidth]{1-plots/Vel_primes_plot_3043_1354.png}
+				\caption{Fluctuating velocity at $t=\SI{3043.9}{\second}$ and at $t=\SI{1354.1}{\second}$.}
+				\label{fig:Vel prime}
 			\end{figure}
 			
 			
 			\clearpage
 			\item Now that you have decomposed the velocity, compute the individual components of the turbulent kinetic energy and the Reynolds stresses. Discuss any significant features of the patterns or magnitudes.\par
 			
-			To calculate the TKE and the Reynolds stresses, I multiplied the fluctuating velocities together at each point in the time step. For the TKE, shown in \Cref{fig:tke 3043}, I plotted the individual components, as well as the total TKE as functions of $x$ and $z$. I still need to fix the limits for the plots so each plot uses the same colors for their values, but I did not know before plotting what the values would be. From the magnitudes I can see currently, the $x$-direction TKE is the largest and contributes the most to the total. The other two components have contributions that can be seen on the total TKE plot, but the overall shape matches with the $x$-component. \Cref{fig:reynolds 3043} shows the components of the Reynolds stress, without being multiplied by density. Again, I need to do more work on the axis limits on these plots, but it looks like the $u^{\prime}$ components are the strongest, with being much larger than the others. I would expect that the $u^{\prime}w^{\prime}$ component is the largest since the $x$-direction is the direction of the main flow and the $z$-direction is the direction where the turbulence starts. (I need to make this plot look better, it is difficult to make out any important detail.)
+			To calculate the TKE and the Reynolds stresses, I multiplied the fluctuating velocities together at each point in the time step. For the TKE, shown in \Cref{fig:tke}, I plotted the individual components, as well as the total TKE as functions of $x$ and $z$. The TKE in the $y$-direction has the smallest magnitude, which is what we would expect from this flow. The TKE in the $x$ direction looks a little more spread out than in the $z$ direction, but with similar magnitudes. \Cref{fig:reynolds 3043} shows the components of the Reynolds stress, without being multiplied by density. Similarly to the TKE, the Reynolds stresses with $y$ components included are smaller in magnitude than the other components.
 			
 			\begin{figure}[htpb]
 				\centering
-				\includegraphics[width=\textwidth]{1-plots/tke_plot_3043.png}
-				\caption{TKE at $t=\SI{3043.9}{\second}$.}
-				\label{fig:tke 3043}
+				\includegraphics[width=\textwidth]{1-plots/tke_plot_3043_1354.png}
+				\caption{TKE at $t=\SI{3043.9}{\second}$ and at $t=\SI{1354.1}{\second}$.}
+				\label{fig:tke}
 			\end{figure}
 		
 			\begin{figure}[htbp]
@@ -104,7 +103,14 @@
 			\clearpage
 			\item Perform the same set of calculations for an earlier time in the flow (when the turbulence is perhaps less homogeneous). Discuss any differences in the character of the flow and/or the components of the tke and Reynolds stresses.\par
 			
-			I have not done this for a second time step yet, but the process would be the same. I would expect that the components of fluctuating velocity, stress, and TKE in the $z$ and $y$ directions to be less than they are at the later time step, since they are increased by the turbulence.
+			I selected the third time step ($t=\SI{1354.1}{\second}$) to compare to the first selected time step because it is in a sweet spot where the flow is moving, but is not very turbulent. You can see over all of the plots above, and \Cref{fig:reynolds 1354} below, that the flow at the earlier time step is a lot less turbulent. It has structure and you can still see the two layers of flow and the boundary between them. Something else that is worth mentioning is the $y$-direction components are very small at the early time step, but increase for the later time step. We expect this due to the three-dimensional nature of turbulence.
+			
+			\begin{figure}[htbp]
+				\centering
+				\includegraphics[width=\textwidth]{1-plots/ReynoldsStress_plot_1354.png}
+				\caption{Reynolds stresses at $t=\SI{1354.1}{\second}$.}
+				\label{fig:reynolds 1354}
+			\end{figure}
 			
 			
 			
@@ -126,35 +132,17 @@
 				\epsilon = 2\nu \overline{s_{ij} s_{ij}}\:.
 				\label{eq:dissipation}
 			\end{equation}
-			The definition for $S_{ij}$:
+			Because the other terms are very small, $S_{ij}$ is only dependent on the $z$ derivative of the mean velocity in the $x$-direction.
 			\begin{equation}
-				S_{ij} = \frac{1}{2} \left( \frac{\partial U_i}{\partial x_j} + \frac{\partial U_j}{\partial x_i} \right)\:.
-				\label{eq:Sij def}
+				S_{ij} =  \frac{\partial U}{\partial z}
 			\end{equation}
-			I initially thought that because I am ignoring the $y$-direction, the only component I was interested in was the $S_{13}$ term, which gives the following for the mean.
+			To calculate the production term, I used the Reynolds stress term, $u^{\prime}w^{\prime}$, and the $S_{ij}$ definition above.
+		
+			The fluctuating term needs all of the components because at the small scale, all of the components have significant contribution. It should be noted that I did not include any $y$ derivatives for any of my calculations because I only included one $y$ plane. This assumption may have effects on the fluctuating values, but I did not include it in my calculations when I first began and did not have the time to add it back in. 
 			\begin{equation}
-				S_{13} = \frac{1}{2} \left( \frac{\partial U_1}{\partial x_3} + \frac{\partial U_3}{\partial x_1} \right)
+				s_{ij} = \frac{1}{2} \left( \frac{\partial u^{\prime}_i}{\partial x_j} + \frac{\partial u^{\prime}_j}{\partial x_i} \right)
 			\end{equation}
-			Because I averaged over $x$, there cannot be a partial derivative in the $x$-direction, so this reduces to:
-			\begin{equation}
-				S_{13} = \frac{1}{2} \frac{\partial U}{\partial z}\:.
-			\end{equation}
-			The fluctuating term would keep this $x$ derivative because it is not averaged.
-			\begin{equation}
-				s_{13} = \frac{1}{2} \left( \frac{\partial u^{\prime}}{\partial z} + \frac{\partial w^{\prime}}{\partial x} \right)
-			\end{equation}
-			I calculated the production and dissipation using these definitions, but after discussing with other students, I was convinced that $S_{ij}$ has more terms, so I calculated the production and dissipation using the following definitions. The additional terms come from the fact that the strain is a second order tensor and therefore has nine terms, but $S_{ij}$ is just the symmetrical part, so its actually three unique terms, which then reduce down due to neglecting the $y$-direction and averaging over $x$.
-			\begin{equation}
-				S_{ij} =  \frac{1}{2} \left( \frac{\partial U_1}{\partial x_2} + \frac{\partial U_2}{\partial x_1} \right) + \frac{1}{2} \left( \frac{\partial U_2}{\partial x_3} + \frac{\partial U_3}{\partial x_2} \right) + \frac{1}{2} \left( \frac{\partial U_3}{\partial x_1} + \frac{\partial U_1}{\partial x_3} \right)
-			\end{equation}
-			\begin{equation}
-				S_{ij} = \frac{1}{2} \left( \frac{\partial U}{\partial z} + \frac{\partial V}{\partial z} \right)
-			\end{equation}
-			Now the fluctuating part.
-			\begin{equation}
-				s_{ij} = \frac{1}{2} \left( \frac{\partial u^{\prime}}{\partial z} + \frac{\partial w^{\prime}}{\partial x} + \frac{\partial v^{\prime}}{\partial z} + \frac{\partial v^{\prime}}{\partial z} \right)
-			\end{equation}
-			I do not think these new definitions are correct. I am not very familiar with tensor math, but just adding the terms together doesn't seem right. Only using the 1-3 component makes sense to me, since that is what we are looking at mostly, but I am not sure. I have probably thought about it too much. (Hopefully you can provide some insight into which of these paths is correct, or at least in the right direction.) I did not compare my plots with both methods yet, so I do not know how much impact it has. Other students I have worked with did compare these two methods and the results seem very close, with some minor differences that are expected by added more terms. \Cref{fig:prod diss 3043} shows the production and dissipation as functions of $x$ and $z$. As with all of the other plots, I need to adjust the axes so they are the same scale for easier comparison, but it does appear that the shape of the production follows the dissipation (or the other way around, they look similar in shape). I would guess that they do not exactly balance each other, but are probably close, just from looking at the plots. To average the production and dissipation, I averaged over $x$ for each $z$ for the horizontal average (the same type of average as I performed for the velocity); for the volume average, I averaged the horizontal average values together to get one number. The total volume average values can be seen in \Cref{tab:prod diss}. They are the same order of magnitude, but the production is almost twice as large as the dissipation.
+			To calculate the dissipation, I squared the $s_{ij}$ matrix element-wise, then added the terms together, then multiplied that result by the viscosity. I am not sure that I did this correctly, especially because I probably made errors while coding it in MATLAB. \Cref{fig:prod diss 3043} shows the production and dissipation as functions of $x$ and $z$. The general shape and location of the dissipation matches the production pretty well, but the magnitude is smaller. Part of this difference may be due to me leaving out the $y$ terms, as well as me most likely messing up the calculation. To average the production and dissipation, I averaged over $x$ for each $z$ for the horizontal average (the same type of average as I performed for the velocity); for the volume average, I averaged the horizontal average values together to get one number. \Cref{fig:prod diss horiz} shows the horizontal average and \Cref{fig:prod diss jb time} shows the volume averages for all time steps. For the horizontal average, the production and dissipation do not look like they match each other, however, the dissipation does follow the same trend and the production if you remember that the dissipation is always positive due to squaring the components. So the magnitudes do not compare, but the shape is similar between the production and the dissipation at this time step.
 			
 			
 			\begin{figure}[htbp]
@@ -163,24 +151,29 @@
 				\caption{Production and dissipation at $t=\SI{3043.9}{\second}$.}
 				\label{fig:prod diss 3043}
 			\end{figure}
-		
-			\begin{table}[htbp]
+			
+			
+			\begin{figure}
 				\centering
-				\caption{Volume averaged production and dissipation at $t=\SI{3043.9}{\second}$.}
-				\begin{tabular}{cc}
-					\toprule
-					Parameter & Value\\
-					\midrule
-					P & 2.6973e-10\\
-					$\epsilon$ & 1.5112e-10\\
-					\bottomrule
-				\end{tabular}
-				\label{tab:prod diss}
-			\end{table}
+				\includegraphics[width=\textwidth]{1-plots/Horizontal_prod_diss_plot_3043.png}
+				\caption{Horizontal averaged shear production and dissipation at $t=\SI{3043.9}{\second}$.}
+				\label{fig:prod diss horiz}
+			\end{figure}
+			
 			
 			
 			\clearpage
-			\item Once you are satisfied that you can compute production and dissipation (i.e., (a) above), compute the average of each for every timestep and plot a time series. Does production equal dissipation on average? Write a paragraph describing the production and dissipation evolution.
+			\item Once you are satisfied that you can compute production and dissipation (i.e., (a) above), compute the average of each for every timestep and plot a time series. Does production equal dissipation on average? Write a paragraph describing the production and dissipation evolution.\par
+			
+			\Cref{fig:prod diss jb time} shows the evolution over time of the volume averages of the shear production, dissipation, and the buoyancy production. Just looking at the beginning of the time evolution, we can see that the dissipation does not equal the production. However, after the production trends to zero at around \SI{1800}{\second} or so. After this point, the dissipation is pretty close to being equal to the production. As we would expect with no source adding to the turbulence, both the production and dissipation fall off as time goes on. At the beginning, the dissipation is small due to most of the energy being in the large scales, not having cascaded down to the small scales yet.
+			
+			
+			\begin{figure}[htbp]
+				\centering
+				\includegraphics[width=\textwidth]{1-plots/Time_prod_diss_Jb_plot.png}
+				\caption{Volume averaged shear production, dissipation, and buoyancy flux over time.}
+				\label{fig:prod diss jb time}
+			\end{figure}
 		\end{enumerate}
 	
 	
@@ -188,10 +181,26 @@
 		% Part 3
 		\item \textbf{Part 3:} Now consider the buoyancy production term.
 		\begin{enumerate}
-			\item Compute time-integrals of the spatially-integrated buoyancy production $J_b$ and compare this to shear production and dissipation. Does this help to account for any mismatches above? If there are mismatches and you can't close the energy budget, explain what might be the problem.
+			\item Compute time-integrals of the spatially-integrated buoyancy production $J_b$ and compare this to shear production and dissipation. Does this help to account for any mismatches above? If there are mismatches and you can't close the energy budget, explain what might be the problem.\par
+			
+			To calculate the buoyancy production, I used the following definition.
+			\begin{equation}
+				J_b = -\frac{g}{\rho_0} \overline{w^{\prime}\rho^{\prime}}
+			\end{equation}
+			Both of the density values were provided by the data set, so no averaging or calculation was required. \Cref{fig:prod diss jb time} shows the evolution of the buoyancy production along with the shear production and the dissipation. It looks like the buoyancy does make up the difference between the dissipation and the production, especially at the beginning of the time evolution. Later on in time, it is difficult to tell just from the plot what contribution the buoyancy has, since it is close to zero. I did not explicitly calculate energy budget, so I do not know for sure how close it is. If it is not closed, the error from not including the $y$ derivative terms might the greatest factor. Also, I could have calculated something wrong.
 			
 			
-			\item  Now try to compare these to the integrated TKE production and the total change in potential energy due to mixing within the simulation domain. Can you close an energy budget, and if not, what might be the problem? What is the mixing efficiency? Which measure of the total mixing is most robust?
+			\item  Now try to compare these to the integrated TKE production and the total change in potential energy due to mixing within the simulation domain. Can you close an energy budget, and if not, what might be the problem? What is the mixing efficiency? Which measure of the total mixing is most robust?\par
+			
+			To calculate the mixing efficiency, I used the following formula:
+			\begin{equation}
+				\Gamma = \frac{J_b}{\epsilon}\:.
+			\end{equation}
+			\Cref{tab:mixing} shows the volume averaged mixing efficiency for each time step. It does not make sense to be negative, so I maybe should have taken the absolute value, but the magnitudes look mostly reasonable. Some of them are very high, but that might be due to the averaging not properly capturing the mixing.
+			
+			
+			
+			\input{2-tabs/mixing_tab.tex}
 		
 		\end{enumerate}
 		
