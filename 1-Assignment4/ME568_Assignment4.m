@@ -192,6 +192,7 @@ for k=1:length(dns_data)
        J_b_horiz(j) = mean(J_b(j,:)); 
     end
     J_b_avg(k) = mean(J_b_horiz);
+    Gamma_avg = J_b_avg ./ ep_avg;
 
 
 
@@ -201,6 +202,7 @@ end
 writematrix(P_avg,'2-tabs/production');
 writematrix(ep_avg,'2-tabs/dissipation');
 writematrix(J_b_avg,'2-tabs/buoyancy');
+writematrix(Gamma_avg,'2-tabs/mixing');
 
 
 %
