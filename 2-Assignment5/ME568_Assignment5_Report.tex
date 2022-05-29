@@ -1,0 +1,77 @@
+\documentclass[11pt]{article}
+\usepackage{fancyhdr}
+\usepackage[letterpaper, margin=1in]{geometry}
+%\usepackage{indentfirst}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{siunitx}
+\sisetup{detect-weight=true, detect-family=true} % makes siunitx follow font formatting like bold, italic, etc.
+\usepackage{cancel}
+\usepackage{isotope}
+\usepackage{listings}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage{xspace}
+\usepackage{booktabs} % makes tables pretty
+\usepackage{longtable} % for long tables
+\usepackage{multirow} % makes tables pretty
+\usepackage{multicol} % makes tables pretty
+\usepackage{setspace}
+\usepackage{subcaption}
+\usepackage[utf8]{inputenc}
+\usepackage{textcomp}
+\usepackage{titlesec}
+\usepackage{svg}
+\usepackage{pdflscape} % makes pages landscape
+\usepackage{mathtools}
+\usepackage{enumitem}
+\usepackage[T1]{fontenc}
+\usepackage{tikz}
+\usepackage{soul}
+
+\usepackage{hyperref}
+\usepackage{cleveref}
+\newcommand{\creflastconjunction}{, and\nobreakspace} % adds oxford comma to cleveref
+
+\doublespacing
+
+% bib if needed
+\bibliographystyle{ieeetr}
+
+
+% fancy header stuff
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+\setlength{\headheight}{28pt}
+\lhead{ME 568 / OC 674\\Spring 2022}
+\chead{Assignment 5\\}
+\rhead{Austin Warren\\Due June 6, 2022}
+
+\begin{document}
+
+\begin{enumerate}
+
+    % part 1
+    \item \textbf{Part 1: Scales of Turbulence} Estimate characteristic velocity and length scales of the turbulence. Can you use these scales to determine the dissipation rate? What is the Taylor microscale? Kolmogorov lenghtscale? Does the model actually resolve the smallest turbulent scales? How do each of these scales vary with time? Is their variability consistent with your expectations? Can you also estimate a timescale for largest scale motions? And the smallest scale motions? Briefly explain how/whether/why these are consistent with your expectations.\par
+    
+
+    % part 2
+    \item \textbf{Part 2: Eddy Viscosity} There are several ways that one can estimate an eddy viscosity. From the data, determine an ''eddy viscosity'' for this flow. Does your estimate evolve in time, and if so, how does it vary? Can you determine some average value for it? And then, is there a way in which you can determine/varify whether your estimate is approximately correct?
+    
+
+    % part 3
+    \item \textbf{Part 3: Turbulent Spectra} Compute the turbulent energy spectrum that characterizes one component of the velocity fluctuations at a given timestep (it is usually useful to average a number of spectra together in a quasi-homogeneous region to reduce noise/uncertainty). Does the spectrum look like you would expect it to? Do this for all the timesteps and plot on a single plot. Do the spectra vary in a way that is consistent with your expectations? Can you estimate the dissipation reate from those spectra, and is it consistent with your previous estimates?
+
+
+
+\end{enumerate}
+
+
+
+
+
+
+
+
+\end{document}
