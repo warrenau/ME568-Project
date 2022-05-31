@@ -57,20 +57,30 @@
     
     Ideas:
     \begin{itemize}
-        \item correlation to find length scale
-        \item not sure on characteristic velocity scale
+        \item correlation to find length scale -- or just use physical limits of problem
+        \item not sure on characteristic velocity scale -- not mean velocity, I don't think
         \item $\frac{u^3}{\ell}$ for dissipation once I know the velocity and length
         \item Kolmogorov scale is where Re=1
-        \item Taylor microscale relates characteristic velocity and dissipation
+        \item Taylor microscale relates characteristic velocity and dissipation $\frac{\lambda}{L} \sim Re_L^{-1/2}$ and $\epsilon = 15\nu u^2 / \lambda^2$ for isotropic turbulence
     \end{itemize}
     
 
     % part 2
     \item \textbf{Part 2: Eddy Viscosity} There are several ways that one can estimate an eddy viscosity. From the data, determine an ''eddy viscosity'' for this flow. Does your estimate evolve in time, and if so, how does it vary? Can you determine some average value for it? And then, is there a way in which you can determine/varify whether your estimate is approximately correct?
     
+    Ideas:
+    \begin{itemize}
+        \item $\overline{u_i u_j} = \nu_T \frac{\partial u_i}{\partial x_j}$
+    \end{itemize}
+    
 
     % part 3
-    \item \textbf{Part 3: Turbulent Spectra} Compute the turbulent energy spectrum that characterizes one component of the velocity fluctuations at a given timestep (it is usually useful to average a number of spectra together in a quasi-homogeneous region to reduce noise/uncertainty). Does the spectrum look like you would expect it to? Do this for all the timesteps and plot on a single plot. Do the spectra vary in a way that is consistent with your expectations? Can you estimate the dissipation reate from those spectra, and is it consistent with your previous estimates?
+    \item \textbf{Part 3: Turbulent Spectra} Compute the turbulent energy spectrum that characterizes one component of the velocity fluctuations at a given timestep (it is usually useful to average a number of spectra together in a quasi-homogeneous region to reduce noise/uncertainty). Does the spectrum look like you would expect it to? Do this for all the timesteps and plot on a single plot. Do the spectra vary in a way that is consistent with your expectations? Can you estimate the dissipation rate from those spectra, and is it consistent with your previous estimates?
+    
+    Ideas:
+    \begin{itemize}
+        \item Dr. Nash said something about giving us a matlab file to calculate spectra?
+    \end{itemize}
 
 
 
