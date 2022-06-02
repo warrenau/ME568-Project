@@ -56,12 +56,12 @@ for k=1:length(dns_data)
     
     maxlag = numx;
     for i=1:numz
-        [Rxy, rhoxy, s2x, s2y, mux, muy, lag, Nk] = xcovar(u_prime,u_prime,maxlag);
-        char_ell(i,k) = trapz(rhoxy,lag);
+        [Rxy, rhoxy, s2x, s2y, mux, muy, lag, Nk] = xcovar(u_prime(i,:),u_prime(i,:),maxlag);
+        char_ell(i,k) = trapz(dat.dx, rhoxy(numx+1:end));
         
-        if k==8 && i==ceil(numz/2)
+        if k==8 && (i==ceil(numz/2) || i==ceil(numz/4) || i==ceil(3*numz/4) )
+            plot(lag(numx+1:end), rhoxy(numx+1:end));
             hold on
-            plot(lag, rhoxy);
             xlabel('lag')
             ylabel('\rho')
         end
@@ -77,7 +77,7 @@ for k=1:length(dns_data)
     
 end
 
-
+legend('i=1/2','i=1/4','i=3/4')
 % characteristic velocity
 char_vel = sqrt(tke_sum);
 
