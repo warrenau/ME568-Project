@@ -10,12 +10,15 @@ load dns_data.mat
 y_ind = 2; % only using the second y plane
 P_avg = zeros(length(dns_data),1);
 ep_avg = zeros(length(dns_data),1);
+P_sum = zeros(length(dns_data),1);
+ep_sum = zeros(length(dns_data),1);
 J_b_avg = zeros(length(dns_data),1);
 tke_sum = zeros(1,length(dns_data));
 
 
 char_ell = zeros(dns_data(1).nz,length(dns_data));
 lambda = zeros(dns_data(1).nz,length(dns_data));
+eta_horiz = zeros(dns_data(1).nz,length(dns_data));
 
 for k=1:length(dns_data)
 
@@ -51,6 +54,15 @@ for k=1:length(dns_data)
 
     tke_tot = (tke_u + tke_v + tke_w);
     tke_sum(k) = sum(tke_tot,'all');
+    
+    %
+    % Reynolds Stress
+    uu = u_prime.^2;
+    uv = u_prime.*v_prime;
+    uw = u_prime.*w_prime;
+    vv = v_prime.^2;
+    ww = w_prime.^2;
+    vw = v_prime.*w_prime;
 
     %
     hx = dat.dx;
@@ -84,7 +96,11 @@ for k=1:length(dns_data)
     P_avg(k) = mean(P_horiz);
     ep_avg(k) = mean(ep_horiz);
     
+    P_sum(k) = sum(production,'all');
+    ep_sum(k) = sum(dissipation,'all');
     
+    % kolmogorov
+    eta = abs(dat.nu ./ u_prime); 
     % correlation for integral length scale (and Taylor length scale?)
     
     maxlag = numx-2;
@@ -94,6 +110,7 @@ for k=1:length(dns_data)
         drhoxy = diff(rhoxy(numx+1:end))/dat.dx;
         ddrhoxy = diff(drhoxy)/dat.dx;
         lambda(i,k) = real(sqrt(-2/ddrhoxy(1)));
+        eta_horiz(i,k) = mean(eta(i,:));
         
         if k==8 && (i==ceil(numz/2) || i==ceil(numz/4) || i==ceil(3*numz/4) )
             plot(lag, rhoxy);
@@ -131,6 +148,29 @@ for i=1:length(dns_data)
 end
 prod_int = trapz(time_int, P_avg);
 diss_int = trapz(time_int, ep_avg);
+
+P_sum_tot = sum(P_sum,'all');
+ep_sum_tot = sum(ep_sum,'all');
+
+% compare length scales
+% take the median at each time of the Taylor and Komogorov scales
+lambda_med = zeros(length(dns_data),1);
+eta_med = zeros(length(dns_data),1);
+for i=1:length(dns_data)
+    lambda_med(i) = median(lambda(:,i));
+    eta_med(i) = median(eta_horiz(:,i));
+end
+figure(2); clf;
+semilogy(time_int,char_length,'-k')
+hold on
+semilogy(time_int,lambda_med,'-b')
+semilogy(time_int,eta_med,'-r')
+xlabel('Time (s)')
+ylabel('Length (m)')
+legend('\ell','\lambda','\eta')
+ylim([1e-3 1e1]);
+
+
 
 
 
