@@ -57,11 +57,12 @@
     
     Ideas:
     \begin{itemize}
-        \item correlation to find length scale -- or just use physical limits of problem
-        \item not sure on characteristic velocity scale -- not mean velocity, maybe use relation between mean flow scales and turbulent scales: $\ell/L \sim u/U$ and $\ell/u \sim L/U$? -- just square root tke, lol
+        \item correlation to find length scale -- or just use physical limits of problem $\ell = \int_0^{\infty}\rho(x)dx$
+        \item not sure on characteristic velocity scale -- just square root tke, lol
         \item $\frac{u^3}{\ell}$ for dissipation once I know the velocity and length
-        \item Kolmogorov scale is where Re=1
-        \item Taylor microscale relates characteristic velocity and dissipation $\frac{\lambda}{L} \sim Re_L^{-1/2}$ and $\epsilon = 15\nu u^2 / \lambda^2$ for isotropic turbulence -- Liburdy says to use correlation thing for Taylor microscale
+        \item Kolmogorov scale is where Re=1; also $\eta=\left( \epsilon/\nu \right)^{1/2}$; $\eta=\left(\nu^3/\epsilon\right)\sim L Re^{-3/4}$
+        \item Taylor microscale relates characteristic velocity and dissipation $\frac{\lambda}{L} \sim Re_L^{-1/2}$ and $\epsilon = 15\nu u^2 / \lambda^2$ for isotropic turbulence -- Liburdy says to use correlation thing for Taylor microscale $1+\frac{r^2}{2}\frac{\partial^2\rho}{\partial r^2} = 1-\frac{r^2}{\lambda^2}$
+        \item compare characteristic time scale to time scale determined with frozen turbulence ($\ell/U$ and $L/U$); also $\frac{tke}{\epsilon}=\frac{u^2}{u^3/\ell}=\frac{u}{\ell}$
     \end{itemize}
     
 
@@ -72,6 +73,8 @@
     \begin{itemize}
         \item $\overline{u_i u_j} = \nu_T \frac{\partial u_i}{\partial x_j}$
         \item $\nu_T = \left( tke \right)^{1/2} \ell$ -- this is what Liburdy said in class
+        \item $\nu_T \left( \frac{\partial U}{\partial z} \right)^{2} = \epsilon$
+        \item $\frac{\partial U}{\partial t} = \nu_T$
     \end{itemize}
     
 

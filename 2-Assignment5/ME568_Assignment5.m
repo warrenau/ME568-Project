@@ -11,10 +11,11 @@ y_ind = 2; % only using the second y plane
 P_avg = zeros(length(dns_data),1);
 ep_avg = zeros(length(dns_data),1);
 J_b_avg = zeros(length(dns_data),1);
-tke_sum = zeros(length(dns_data),1);
+tke_sum = zeros(1,length(dns_data));
 
 
 char_ell = zeros(dns_data(1).nz,length(dns_data));
+lambda = zeros(dns_data(1).nz,length(dns_data));
 
 for k=1:length(dns_data)
 
@@ -54,13 +55,16 @@ for k=1:length(dns_data)
     
     % correlation for integral length scale (and Taylor length scale?)
     
-    maxlag = numx;
+    maxlag = numx-2;
     for i=1:numz
         [Rxy, rhoxy, s2x, s2y, mux, muy, lag, Nk] = xcovar(u_prime(i,:),u_prime(i,:),maxlag);
         char_ell(i,k) = trapz(dat.dx, rhoxy(numx+1:end));
+        drhoxy = diff(rhoxy(numx+1:end))/dat.dx;
+        ddrhoxy = diff(drhoxy)/dat.dx;
+        lambda(i,k) = real(sqrt(-2/ddrhoxy(1)));
         
         if k==8 && (i==ceil(numz/2) || i==ceil(numz/4) || i==ceil(3*numz/4) )
-            plot(lag(numx+1:end), rhoxy(numx+1:end));
+            plot(lag, rhoxy);
             hold on
             xlabel('lag')
             ylabel('\rho')
@@ -80,6 +84,10 @@ end
 legend('i=1/2','i=1/4','i=3/4')
 % characteristic velocity
 char_vel = sqrt(tke_sum);
+% characteristic length
+char_length = max(char_ell);
+% dissipation from characteristic velocity and length
+char_diss = char_vel.^3 ./ char_length;
 
 
 
