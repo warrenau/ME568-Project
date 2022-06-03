@@ -51,6 +51,38 @@ for k=1:length(dns_data)
 
     tke_tot = (tke_u + tke_v + tke_w);
     tke_sum(k) = sum(tke_tot,'all');
+
+    %
+    hx = dat.dx;
+    hz = dat.dz;
+
+    [dUdz] = gradient(U,hz);
+    S_ij = (dUdz);
+
+    [dudz, dudx] = gradient(u_prime, hz, hx);
+    [dwdz, dwdx] = gradient(w_prime, hz, hx);
+    [dvdz, dvdx] = gradient(v_prime, hz, hx);
+
+
+    production = - uw.*S_ij;
+    dissipation = zeros(numz,numx);
+    for m = 1:numz
+        for n = 1:numx
+            sij = [0.5*(dudx(m,n) + dudx(m,n)), 0.5*(dudz(m,n) + dwdx(m,n));
+                   0.5*(dwdx(m,n) + dudz(m,n)), 0.5*(dwdz(m,n) + dwdz(m,n))]; % need to add dy terms, but I dont want to add a third dimension to the code right now
+            dissipation(m,n) = 2 * dat.nu * sum(sij.^2,'all');
+        end
+    end
+
+    P_horiz = zeros(numz,1);
+    ep_horiz = zeros(numz,1);
+    for i = 1:numz
+       P_horiz(i,1) = mean(production(i,:));
+       ep_horiz(i,1) = mean(dissipation(i,:));
+    end
+
+    P_avg(k) = mean(P_horiz);
+    ep_avg(k) = mean(ep_horiz);
     
     
     % correlation for integral length scale (and Taylor length scale?)
@@ -86,9 +118,19 @@ legend('i=1/2','i=1/4','i=3/4')
 char_vel = sqrt(tke_sum);
 % characteristic length
 char_length = max(char_ell);
+% characteristic time scale
+char_time = char_length./char_vel;
 % dissipation from characteristic velocity and length
 char_diss = char_vel.^3 ./ char_length;
 
+
+% integrate dissipation and production
+time_int = zeros(length(dns_data),1);
+for i=1:length(dns_data)
+    time_int(i) = dns_data(i).time;
+end
+prod_int = trapz(time_int, P_avg);
+diss_int = trapz(time_int, ep_avg);
 
 
 
