@@ -1,7 +1,7 @@
 % ME 568 Assignment 5
 % Austin Warren
 % May 2022
-clear; clc; clf;
+clear; clc; figure(1);clf;
 
 
 % read in dns data
@@ -20,6 +20,10 @@ char_ell = zeros(dns_data(1).nz,length(dns_data));
 lambda = zeros(dns_data(1).nz,length(dns_data));
 eta_horiz = zeros(dns_data(1).nz,length(dns_data));
 
+spectraz = 10;
+nfft = 256;
+power = zeros(length(dns_data),nfft/2);
+freq = zeros(length(dns_data),nfft/2);
 for k=1:length(dns_data)
 
 
@@ -113,11 +117,22 @@ for k=1:length(dns_data)
         eta_horiz(i,k) = mean(eta(i,:));
         
         if k==8 && (i==ceil(numz/2) || i==ceil(numz/4) || i==ceil(3*numz/4) )
+            %figure(1);
             plot(lag, rhoxy);
             hold on
-            xlabel('lag')
-            ylabel('\rho')
         end
+    end
+    
+    % spectra stuff -- average over first 10 or so z slices?
+    p = zeros(nfft/2,spectraz);
+    f = zeros(nfft/2,spectraz);
+    for j=1:spectraz
+        [p(:,j),f(:,j)] = fast_psd(u_prime(j,:),nfft,1);
+    end
+    
+    for h=1:nfft/2
+        power(k,h) = mean(p(h,:));
+        freq(k,h) = mean(f(h,:));
     end
     
     
@@ -130,7 +145,22 @@ for k=1:length(dns_data)
     
 end
 
+
+figure(1);
+xlabel('lag')
+ylabel('\rho')
 legend('i=1/2','i=1/4','i=3/4')
+
+figure(2); clf;
+for i=1:length(dns_data)
+    loglog(freq(i,:),power(i,:))
+    hold on
+end
+xlabel('Frequency')
+ylabel('\phi')
+legend('671.8','1010.5','1354.1','1687.6','2031.0','2369.9','2704.6','3043.9','3383.3','3722.7','4067.0','4406.3','4749.6','5291.5','5827.2','6505.0','location','southwest','NumColumns',2)
+saveas(gcf,'1-plots/psd_plot.png')
+
 % characteristic velocity
 char_vel = sqrt(tke_sum);
 % characteristic length
@@ -162,7 +192,7 @@ for i=1:length(dns_data)
     lambda_med(i) = median(lambda(:,i));
     eta_med(i) = median(eta_horiz(:,i));
 end
-figure(2); clf;
+figure(3); clf;
 semilogy(time_int,char_length,'-k','linewidth',2)
 hold on
 semilogy(time_int,lambda_med,'-b','linewidth',2)

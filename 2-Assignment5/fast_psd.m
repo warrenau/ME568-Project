@@ -15,7 +15,7 @@ if max_ind==nfft
       warning('OSUmix:fast_psd:nfft',['Only ' num2str(nfft) ' points are being used for this spectra']); 
    end
 end
-wind=hanning(nfft);
+wind=hann(nfft); % changed hanning to hann AMW June 03, 2022
 if size(x,1)==1
   wind=wind';
 end
