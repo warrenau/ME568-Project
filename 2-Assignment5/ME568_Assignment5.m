@@ -134,11 +134,13 @@ legend('i=1/2','i=1/4','i=3/4')
 % characteristic velocity
 char_vel = sqrt(tke_sum);
 % characteristic length
-char_length = max(char_ell);
+char_length = max(abs(char_ell));
 % characteristic time scale
 char_time = char_length./char_vel;
 % dissipation from characteristic velocity and length
 char_diss = char_vel.^3 ./ char_length;
+% turbulent viscosity based on characteristic velocity and length
+char_nuT = char_vel .* char_length;
 
 
 % integrate dissipation and production
@@ -161,14 +163,15 @@ for i=1:length(dns_data)
     eta_med(i) = median(eta_horiz(:,i));
 end
 figure(2); clf;
-semilogy(time_int,char_length,'-k')
+semilogy(time_int,char_length,'-k','linewidth',2)
 hold on
-semilogy(time_int,lambda_med,'-b')
-semilogy(time_int,eta_med,'-r')
+semilogy(time_int,lambda_med,'-b','linewidth',2)
+semilogy(time_int,eta_med,'-r','linewidth',2)
 xlabel('Time (s)')
 ylabel('Length (m)')
-legend('\ell','\lambda','\eta')
+legend('$\ell$','$\lambda$','$\eta$','interpreter','latex')
 ylim([1e-3 1e1]);
+saveas(gcf,'1-plots/char_length_comp_plot.png')
 
 
 
