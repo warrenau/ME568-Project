@@ -1,7 +1,7 @@
 % ME 568 Assignment 5
 % Austin Warren
 % May 2022
-clear; clc; figure(1);clf;
+clear; clc; %figure(1);clf;
 
 
 % read in dns data
@@ -118,8 +118,8 @@ for k=1:length(dns_data)
         
         if k==8 && (i==ceil(numz/2) || i==ceil(numz/4) || i==ceil(3*numz/4) )
             %figure(1);
-            plot(lag, rhoxy);
-            hold on
+            %plot(lag, rhoxy);
+            %hold on
         end
     end
     
@@ -192,16 +192,50 @@ for i=1:length(dns_data)
     lambda_med(i) = median(lambda(:,i));
     eta_med(i) = median(eta_horiz(:,i));
 end
+
+eta_diss = (dns_data(1).nu^3 ./ ep_sum).^(1/4);
+eta_time_diss = (dns_data(1).nu ./ ep_sum).^(1/2);
+eta_vel_diss = (dns_data(1).nu .* ep_sum).^(1/4);
+
+
+
 figure(3); clf;
 semilogy(time_int,char_length,'-k','linewidth',2)
 hold on
 semilogy(time_int,lambda_med,'-b','linewidth',2)
 semilogy(time_int,eta_med,'-r','linewidth',2)
+semilogy(time_int,eta_diss,'--r','linewidth',2)
 xlabel('Time (s)')
 ylabel('Length (m)')
-legend('$\ell$','$\lambda$','$\eta$','interpreter','latex')
-ylim([1e-3 1e1]);
+legend('$\ell$','$\lambda$','$\eta$','$\eta_{\epsilon}$','interpreter','latex')
+%ylim([1e-3 1e1]);
 saveas(gcf,'1-plots/char_length_comp_plot.png')
+
+
+figure(4); clf;
+semilogy(time_int,char_time,'-k','linewidth',2)
+hold on
+semilogy(time_int,eta_time_diss,'-r','linewidth',2)
+xlabel('Time (s)')
+ylabel('Time scale (s)')
+legend('$t$','$\tau_{\eta}$','interpreter','latex')
+saveas(gcf, '1-plots/char_time_plot.png')
+
+figure(5); clf;
+plot(time_int, char_nuT, '-k','linewidth',2)
+xlabel('Time (s)')
+ylabel('\nu_T (m^2/s)')
+saveas(gcf, '1-plots/char_nuT_plot.png')
+
+figure(6); clf;
+semilogy(time_int, char_vel,'-k','linewidth',2)
+hold on
+semilogy(time_int, eta_vel_diss, '-r','linewidth',2)
+xlabel('Time (s)')
+ylabel('Velocity (m/s)')
+legend('$u_{char}$','$u_{\eta}$','interpreter','latex')
+saveas(gcf, '1-plots/char_vel_plot.png')
+
 
 
 
