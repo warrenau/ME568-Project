@@ -18,6 +18,7 @@
 \usepackage{multicol} % makes tables pretty
 \usepackage{setspace}
 \usepackage{subcaption}
+\usepackage[font={bf}]{caption}
 \usepackage[utf8]{inputenc}
 \usepackage{textcomp}
 \usepackage{titlesec}
@@ -64,6 +65,27 @@
         \item Taylor microscale relates characteristic velocity and dissipation $\frac{\lambda}{L} \sim Re_L^{-1/2}$ and $\epsilon = 15\nu u^2 / \lambda^2$ for isotropic turbulence -- Liburdy says to use correlation thing for Taylor microscale $1+\frac{r^2}{2}\frac{\partial^2\rho}{\partial r^2} = 1-\frac{r^2}{\lambda^2}$
         \item compare characteristic time scale to time scale determined with frozen turbulence ($\ell/U$ and $L/U$); also $\frac{tke}{\epsilon}=\frac{u^2}{u^3/\ell}=\frac{u}{\ell}$
     \end{itemize}
+	To get the characteristic velocity, I added up the total tke at each time step, then took the square root of the tke. This may result in a larger than is realistic velocity, but it is a good measure of the energy contained in the turbulence. For the characteristic length scale, I used the integral length scale calculated from integrating the auto-correlation function over the length of the problem. I selected $u^{\prime}$ to use for the auto-correlation. I used a correlation function provided by another student, which seems to work well. I performed the correlation at each $z$ slice of the problem at each time step, then selected the largest value for each time step to get the length scale. Similarly to the characteristic velocity, this may not be entirely realistic, but it will represent the largest scales for the turbulence.
+	\begin{equation}
+		\ell = \int\limits_0^{\infty} \rho (r) dr
+	\end{equation}
+	For the Taylor microscale, I used the Taylor expansion estimate from the correlation function.
+	\begin{equation}
+		1+\frac{r^2}{2}\frac{\partial^2\rho}{\partial r^2} = 1-\frac{r^2}{\lambda^2}
+	\end{equation}
+	Finally for the Kolmogorov length scale, I assumed that the Reynolds number will be one at this scale and used velocity and viscosity to solve for the length scale. I was not sure what velocity to use, but I thought the fluctuating velocity, $u^{\prime}$, would be a good representation of the velocity at that scale.
+	\begin{equation}
+		Re = 1 = \frac{u^{\prime} \eta}{\nu}
+	\end{equation}
+	\Cref{fig:length} shows the characteristic length scale ($\ell$), the Taylor microscale ($\lambda$), and the Kolmogorov length scale ($\eta$) over time.
+	\begin{figure}[htbp]
+		\centering
+		\includegraphics[width=\textwidth]{1-plots/char_length_comp_plot.png}
+		\caption{The characteristic length scale ($\ell$), the Taylor microscale ($\lambda$), and the Kolmogorov length scale ($\eta$) over time.}
+		\label{fig:length}
+	\end{figure}
+    The characteristic length scale stays about constant over the evolution of the flow and is approximately equal to the physical constraint in the $z$ direction, which is a good sign since the turbulence cannot be larger than the physical confines of the problem. The Kolmogorov length scale is only 2-3 orders of magnitude lower than the characteristic length scale, which is not as much gap as I was expecting, but it could be explained by my use of the fluctuating velocity for the Reynolds number. More importantly, the Kolmogorov length scale increases over time, which is what we expect for a turbulent system with no added source of turbulence. As the tke dissipates away, the smallest length scales get larger while the largest length scales remain the same. This plot shows both of these trends. The Taylor microscale is larger than I was expecting, but still falls between the other two scales. It decreases over time, which is not what I was expecting visually when I first saw it, but I believe it is the correct behavior. Since the ratio of the Kolmogorov and Taylor lengths scales with the Reynolds number to a fraction, as the Reynolds number decreases, the difference between the two lengths decreases less and the gap between them would close.
+    
     
 
     % part 2
@@ -85,6 +107,16 @@
     \begin{itemize}
         \item Dr. Nash said something about giving us a matlab file to calculate spectra?
     \end{itemize}
+
+
+	I used Dr. Nash's provided power spectral density function. I averaged over the first ten $z$ slices at each time step, since the bottom of the problem looks mostly homogeneous at each time. \Cref{fig:psd} shows the power spectral density for each time step. I am not sure what the units of the frequency are, but I believe I should be able to relate frequency to something else and get a wave number. The sprectra start out very nice looking with a clear -5/3 looking region (I have not checked to see if this is actually the slope yet), but as time goes on, the spectra get more messy. If the $x$-axis of the plot was wave number, $k$, I would expect the curves to move toward smaller wave numbers over time as well as losing the linear section. 
+
+	\begin{figure}[htbp]
+		\centering
+		\includegraphics[width=\textwidth]{1-plots/psd_plot.png}
+		\caption{Power spectral density for all time steps.}
+		\label{fig:psd}
+	\end{figure}
 
 
 
