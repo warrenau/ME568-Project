@@ -14,7 +14,7 @@ P_sum = zeros(length(dns_data),1);
 ep_sum = zeros(length(dns_data),1);
 J_b_avg = zeros(length(dns_data),1);
 tke_sum = zeros(1,length(dns_data));
-
+U_time = zeros(length(dns_data), dns_data(1).nz);
 
 char_ell = zeros(dns_data(1).nz,length(dns_data));
 lambda = zeros(dns_data(1).nz,length(dns_data));
@@ -42,7 +42,7 @@ for k=1:length(dns_data)
     % Reynolds decomp -- MATLAB requires functions at the end of the file
     % u
     [U, u_prime] = ReynoldsLoop(u,numz,numx);
-
+    U_time(k,:) = U;
     % v
     [V, v_prime] = ReynoldsLoop(v,numz,numx);
 
@@ -146,11 +146,12 @@ for k=1:length(dns_data)
 end
 
 
-figure(1);
-xlabel('lag')
-ylabel('\rho')
-legend('i=1/2','i=1/4','i=3/4')
+%figure(1);
+%xlabel('lag')
+%ylabel('\rho')
+%legend('i=1/2','i=1/4','i=3/4')
 
+% plot psd
 figure(2); clf;
 for i=1:length(dns_data)
     loglog(freq(i,:),power(i,:))
@@ -171,10 +172,31 @@ char_time = char_length./char_vel;
 char_diss = char_vel.^3 ./ char_length;
 % turbulent viscosity based on characteristic velocity and length
 char_nuT = char_vel .* char_length;
+nuT = mean(char_nuT);
+U_nuT = zeros(length(dns_data), dns_data(1).nz);
+U_nuT(1,:) = U_time(1,:);
+time_int = zeros(length(dns_data),1);
+dUdz_time = zeros(length(dns_data)-1, dns_data(1).nz);
+
+for i=length(dns_data)-1
+   dUdz_time(i,:) = gradient(U_time(i,:),dns_data(1).dx);
+   U_nuT(i+1,:) =  U_nuT(i) + (time_int(i+1)-time_int(i))*nuT*dUdz_time(i,:);
+end
+
+% plot U(z) for nuT verification
+figure(1); clf;
+plot(U_time(1,:), dns_data(1).z,'-k','linewidth',2)
+hold on
+plot(U_time(end,:), dns_data(end).z,'--k','linewidth',2)
+plot(U_nuT(end,:), dns_data(end).z,'--b','linewidth',2)
+xlabel('Velocity (m/s)')
+ylabel('z (m)')
+legend('U_{init}','U_{final}','U_{final,\nu}')
+
 
 
 % integrate dissipation and production
-time_int = zeros(length(dns_data),1);
+
 for i=1:length(dns_data)
     time_int(i) = dns_data(i).time;
 end
@@ -193,12 +215,13 @@ for i=1:length(dns_data)
     eta_med(i) = median(eta_horiz(:,i));
 end
 
+% Kolmogorov calcs with dissipation
 eta_diss = (dns_data(1).nu^3 ./ ep_sum).^(1/4);
 eta_time_diss = (dns_data(1).nu ./ ep_sum).^(1/2);
 eta_vel_diss = (dns_data(1).nu .* ep_sum).^(1/4);
 
 
-
+% plot length scales
 figure(3); clf;
 semilogy(time_int,char_length,'-k','linewidth',2)
 hold on
@@ -207,26 +230,28 @@ semilogy(time_int,eta_med,'-r','linewidth',2)
 semilogy(time_int,eta_diss,'--r','linewidth',2)
 xlabel('Time (s)')
 ylabel('Length (m)')
-legend('$\ell$','$\lambda$','$\eta$','$\eta_{\epsilon}$','interpreter','latex')
+legend('$\ell$','$\lambda$','$\eta$','$\eta_{\epsilon}$','interpreter','latex','location','northoutside')
 %ylim([1e-3 1e1]);
 saveas(gcf,'1-plots/char_length_comp_plot.png')
 
-
+% plot time scales
 figure(4); clf;
 semilogy(time_int,char_time,'-k','linewidth',2)
 hold on
 semilogy(time_int,eta_time_diss,'-r','linewidth',2)
 xlabel('Time (s)')
 ylabel('Time scale (s)')
-legend('$t$','$\tau_{\eta}$','interpreter','latex')
+legend('$t$','$\tau_{\eta}$','interpreter','latex','location','east')
 saveas(gcf, '1-plots/char_time_plot.png')
 
+% plot eddy viscosity
 figure(5); clf;
 plot(time_int, char_nuT, '-k','linewidth',2)
 xlabel('Time (s)')
 ylabel('\nu_T (m^2/s)')
 saveas(gcf, '1-plots/char_nuT_plot.png')
 
+% plot velocity scales
 figure(6); clf;
 semilogy(time_int, char_vel,'-k','linewidth',2)
 hold on
