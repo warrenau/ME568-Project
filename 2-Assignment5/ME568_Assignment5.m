@@ -21,7 +21,7 @@ lambda = zeros(dns_data(1).nz,length(dns_data));
 eta_horiz = zeros(dns_data(1).nz,length(dns_data));
 
 spectraz = 10;
-nfft = 256;
+nfft = dns_data(1).nx;
 power = zeros(length(dns_data),nfft/2);
 freq = zeros(length(dns_data),nfft/2);
 for k=1:length(dns_data)
@@ -154,8 +154,16 @@ end
 % plot psd
 figure(2); clf;
 for i=1:length(dns_data)
-    loglog(freq(i,:),power(i,:))
-    hold on
+    if i <= 7
+        loglog(freq(i,:),power(i,:))
+        hold on
+    elseif i>7 && i<15
+        loglog(freq(i,:),power(i,:),'--')
+        hold on
+    elseif i>=15
+        loglog(freq(i,:),power(i,:),'-*')
+        hold on
+    end
 end
 xlabel('Frequency')
 ylabel('\phi')
@@ -175,31 +183,43 @@ char_nuT = char_vel .* char_length;
 nuT = mean(char_nuT);
 U_nuT = zeros(length(dns_data), dns_data(1).nz);
 U_nuT(1,:) = U_time(1,:);
-time_int = zeros(length(dns_data),1);
-dUdz_time = zeros(length(dns_data)-1, dns_data(1).nz);
 
-for i=length(dns_data)-1
-   dUdz_time(i,:) = gradient(U_time(i,:),dns_data(1).dx);
-   U_nuT(i+1,:) =  U_nuT(i) + (time_int(i+1)-time_int(i))*nuT*dUdz_time(i,:);
+time_int = zeros(length(dns_data),1);
+for i=1:length(dns_data)
+    time_int(i) = dns_data(i).time;
+end
+
+d2Udz2_time = zeros(length(dns_data)-1, dns_data(1).nz);
+
+% loop to find U(z) using nuT
+for i=1:(length(dns_data)-1)
+    d2Udz2_time(i,:) = gradient(gradient(U_time(i,:),dns_data(i).dz),dns_data(i).dz);
+    U_nuT(i+1,:) =  U_nuT(i,:) + ((time_int(i+1,:)-time_int(i,:)).*nuT.*d2Udz2_time(i,:));
 end
 
 % plot U(z) for nuT verification
 figure(1); clf;
+subplot(1,2,1)
 plot(U_time(1,:), dns_data(1).z,'-k','linewidth',2)
 hold on
 plot(U_time(end,:), dns_data(end).z,'--k','linewidth',2)
+xlabel('Velocity (m/s)')
+ylabel('z (m)')
+legend('U_{init}','U_{final}','location','southeast')
+subplot(1,2,2)
+plot(U_nuT(1,:), dns_data(1).z, '-b', 'linewidth',2)
+hold on
 plot(U_nuT(end,:), dns_data(end).z,'--b','linewidth',2)
 xlabel('Velocity (m/s)')
 ylabel('z (m)')
-legend('U_{init}','U_{final}','U_{final,\nu}')
+legend('U_{init,\nu_T}','U_{final,\nu_T}','location','southeast')
+saveas(gcf,'1-plots/U_nuT_plot.png')
 
 
 
 % integrate dissipation and production
 
-for i=1:length(dns_data)
-    time_int(i) = dns_data(i).time;
-end
+
 prod_int = trapz(time_int, P_avg);
 diss_int = trapz(time_int, ep_avg);
 
@@ -230,7 +250,7 @@ semilogy(time_int,eta_med,'-r','linewidth',2)
 semilogy(time_int,eta_diss,'--r','linewidth',2)
 xlabel('Time (s)')
 ylabel('Length (m)')
-legend('$\ell$','$\lambda$','$\eta$','$\eta_{\epsilon}$','interpreter','latex','location','northoutside')
+legend('$\ell$','$\lambda$','$\eta$','$\eta_{\epsilon}$','interpreter','latex','location','northoutside','NumColumns',4)
 %ylim([1e-3 1e1]);
 saveas(gcf,'1-plots/char_length_comp_plot.png')
 

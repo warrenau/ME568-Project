@@ -146,6 +146,23 @@
 		\caption{Eddy viscosity estimate over time using characteristic length and velocity.}
 		\label{fig:nuT}
 	\end{figure}
+	The eddy viscosity trends down over time, which is what we would expect since the total tke in the system is decreasing over time, so the distribution of momentum by the turbulence will also decrease over time. To check the estimate, we can use a form of the momentum equation:
+	\begin{equation}
+		\frac{\partial U}{\partial t} = \nu_T \frac{\partial^2 U}{\partial z^2}\:,
+	\end{equation}
+	which can be discretized as:
+	\begin{equation}
+		U_{i+1} = U_{i} + \left( t_{i+1} - t_{i} \right) \left( \frac{\partial^2 U}{\partial z^2} \right)_{i}\:.
+	\end{equation}
+	\Cref{fig:nuT vel} shows the initial velocity profile and final velocity profile for the actual data and for the estimate using the eddy viscosity. I averaged the eddy viscosity over time and just used a constant for the estimate. While the eddy viscosity does trend downwards over time, the actual change in magnitude is not very much, so I felt that using an average was appropriate. The estimate using the eddy viscosity is much larger in amplitude and does not follow the same shape as the actual data. I expect this is from the time steps being so large compared to $dz$ such that any effect of the gradients are amplified much more than they should be.
+	
+	\begin{figure}[htbp]
+		\centering
+		\includegraphics[width=\textwidth]{1-plots/U_nuT_plot.png}
+		\caption{Initial and ending velocity profile for data (left) and eddy viscosity estimate (right).}
+		\label{fig:nuT vel}
+	\end{figure}
+
     
 	\clearpage
     % part 3
@@ -157,7 +174,7 @@
 %    \end{itemize}
 
 
-	I used Dr. Nash's provided power spectral density function. I averaged over the first ten $z$ slices at each time step, since the bottom of the problem looks mostly homogeneous at each time. \Cref{fig:psd} shows the power spectral density for each time step. I am not sure what the units of the frequency are, but I believe I should be able to relate frequency to something else and get a wave number. The sprectra start out very nice looking with a clear -5/3 looking region (I have not checked to see if this is actually the slope yet), but as time goes on, the spectra get more messy. If the $x$-axis of the plot was wave number, $k$, I would expect the curves to move toward smaller wave numbers over time as well as losing the linear section. 
+	I used Dr. Nash's provided power spectral density function. I averaged over the first ten $z$ slices at each time step, since the bottom of the problem looks mostly homogeneous at each time. \Cref{fig:psd} shows the power spectral density for each time step. I am not sure what the units of the frequency are, but I believe I should be able to relate frequency to something else and get a wave number. The spectra start out very nice looking with a clear -5/3 looking region (I have not checked to see if this is actually the slope yet), but as time goes on, the spectra get more messy. If the $x$-axis of the plot was wave number, $k$, I would expect the curves to move toward smaller wave numbers over time as well as losing the linear section. I do not know exactly how to get to wave number in this situation. I know that dividing the frequency by the wave velocity will give the wave number, but I do not know what to use for the wave velocity, as the psd function outputs a vector that is a different length than what goes in. I do not know which velocity to use or how to format it to match the dimensions of the `power' output.
 
 	\begin{figure}[htbp]
 		\centering
@@ -165,6 +182,12 @@
 		\caption{Power spectral density for all time steps.}
 		\label{fig:psd}
 	\end{figure}
+
+	We can find the dissipation rate using the spectra with the following expression.
+	\begin{equation}
+		\epsilon = 2\nu \int\limits_0^{\infty} k^2 E(k) dk
+	\end{equation}
+	Since I do not have the energy spectra as a function of wave number, only frequency, this will not work for my current results. This should be easy to implement if I had the wave number, $k$.
 
 
 
